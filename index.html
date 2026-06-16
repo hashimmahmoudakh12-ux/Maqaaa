@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maqam Al Mahmoud — Book a Performance</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    /* =====================
+       TOKENS
+    ===================== */
+    :root {
+      --forest:   #0D2818;
+      --deep:     #091A10;
+      --mid:      #163823;
+      --leaf:     #1E4D2B;
+      --gold:     #C9A84C;
+      --gold-lt:  #E8C96A;
+      --gold-dim: rgba(201,168,76,0.18);
+      --cream:    #F5EDD8;
+      --cream-dim:#F5EDD820;
+      --white:    #FFFFFF;
+      --muted:    rgba(245,237,216,0.5);
+      --border:   rgba(201,168,76,0.25);
+
+      --ff-display: 'Cormorant Garamond', Georgia, serif;
+      --ff-arabic:  'Amiri', serif;
+      --ff-body:    'Inter', system-ui, sans-serif;
+    }
+
+    /* =====================
+       RESET
+    ===================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--deep);
+      color: var(--cream);
+      font-family: var(--ff-body);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; }
+
+    /* =====================
+       ISLAMIC GEOMETRY SVG BG
+    ===================== */
+    .geo-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cg fill='none' stroke='%23C9A84C' stroke-width='0.8'%3E%3Cpolygon points='60,4 112,34 112,86 60,116 8,86 8,34'/%3E%3Cpolygon points='60,18 98,40 98,82 60,104 22,82 22,40'/%3E%3Cpolygon points='60,4 60,18 8,34 22,40'/%3E%3Cpolygon points='112,34 98,40 98,82 112,86'/%3E%3Cpolygon points='60,116 60,104 22,82 8,86'/%3E%3Cline x1='60' y1='4' x2='60' y2='116'/%3E%3Cline x1='8' y1='34' x2='112' y2='86'/%3E%3Cline x1='8' y1='86' x2='112' y2='34'/%3E%3Ccircle cx='60' cy='60' r='20'/%3E%3Ccircle cx='60' cy='60' r='10'/%3E%3C/g%3E%3C/svg%3E");
+      background-size: 120px 120px;
+    }
+
+    /* =====================
+       NAV
+    ===================== */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(to bottom, rgba(9,26,16,0.95) 0%, transparent 100%);
+      backdrop-filter: blur(4px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .nav-logo img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid var(--gold);
+      object-fit: cover;
+    }
+    .nav-brand {
+      font-family: var(--ff-display);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--gold-lt);
+      letter-spacing: 0.06em;
+    }
+    .nav-brand span {
+      display: block;
+      font-family: var(--ff-arabic);
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 400;
+      letter-spacing: 0.02em;
+    }
+    .nav-links {
+      display: flex;
+      gap: 36px;
+    }
+    .nav-links a {
+      color: var(--muted);
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold-lt); }
+
+    /* =====================
+       HERO
+    ===================== */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      overflow: hidden;
+    }
+
+    /* Radial glow */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px; height: 700px;
+      background: radial-gradient(ellipse, rgba(201,168,76,0.12) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    /* Arch decoration - SVG inline */
+    .hero-arch {
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: min(600px, 90vw);
+      opacity: 0.12;
+      pointer-events: none;
+    }
+
+    .hero-logo {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      box-shadow: 0 0 40px rgba(201,168,76,0.25), 0 0 0 8px rgba(201,168,76,0.06);
+      margin-bottom: 32px;
+      position: relative;
+      z-index: 2;
+      animation: logoGlow 4s ease-in-out infinite alternate;
+    }
+    @keyframes logoGlow {
+      from { box-shadow: 0 0 30px rgba(201,168,76,0.2), 0 0 0 8px rgba(201,168,76,0.04); }
+      to   { box-shadow: 0 0 60px rgba(201,168,76,0.35), 0 0 0 12px rgba(201,168,76,0.08); }
+    }
+
+    .hero-arabic {
+      font-family: var(--ff-arabic);
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      color: var(--gold);
+      margin-bottom: 12px;
+      letter-spacing: 0.04em;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      justify-content: center;
+    }
+    .hero-eyebrow::before,
+    .hero-eyebrow::after {
+      content: '';
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+      opacity: 0.5;
+    }
+
+    .hero-headline {
+      font-family: var(--ff-display);
+      font-size: clamp(2.6rem, 7vw, 5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--cream);
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 2;
+      max-width: 700px;
+    }
+    .hero-headline em {
+      font-style: italic;
+      color: var(--gold-lt);
+    }
+
+    .hero-sub {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 480px;
+      margin-bottom: 48px;
+      line-height: 1.8;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold-lt);
+      font-family: var(--ff-body);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 16px 40px;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      z-index: 2;
+      overflow: hidden;
+    }
+    .hero-cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+      z-index: -1;
+    }
+    .hero-cta:hover { color: var(--deep); }
+    .hero-cta:hover::before { transform: scaleX(1); }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 36px; left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      z-index: 2;
+      animation: bounce 2.5s ease-in-out infinite;
+    }
+    @keyframes bounce {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(6px); }
+    }
+    .scroll-hint svg { opacity: 0.4; }
+
+    /* =====================
+       DIVIDER
+    ===================== */
+    .gold-divider {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      justify-content: center;
+      padding: 0 24px;
+      margin: 0 auto;
+      max-width: 500px;
+    }
+    .gold-divider::before,
+    .gold-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+    }
+    .gold-divider-diamond {
+      width: 8px; height: 8px;
+      background: var(--gold);
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+
+    /* =====================
+       ABOUT
+    ===================== */
+    .about {
+      position: relative;
+      z-index: 1;
+      padding: 96px 24px;
+      text-align: center;
+    }
+    .about-inner {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    .section-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+    .section-title {
+      font-family: var(--ff-display);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 400;
+      color: var(--cream);
+      line-height: 1.2;
+      margin-bottom: 28px;
+    }
+    .about-body {
+      font-size: 1.05rem;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+    .about-arabic-quote {
+      font-family: var(--ff-arabic);
+      font-size: 1.5rem;
+      color: var(--gold);
+      margin: 32px 0 8px;
+      line-height: 2;
+    }
+    .about-arabic-translation {
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-style: italic;
+      letter-spacing: 0.04em;
+    }
+
+    /* Services strip */
+    .services {
+      position: relative;
+      z-index: 1;
+      padding: 0 24px 80px;
+    }
+    .services-grid {
+      max-width: 900px;
+      margin: 48px auto 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1px;
+      border: 1px solid var(--border);
+    }
+    .service-card {
+      padding: 40px 28px;
+      background: rgba(13,40,24,0.6);
+      border: none;
+      text-align: center;
+      backdrop-filter: blur(6px);
+      transition: background 0.3s;
+    }
+    .service-card:hover { background: rgba(30,77,43,0.4); }
+    .service-icon {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+    .service-name {
+      font-family: var(--ff-display);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 6px;
+    }
+    .service-desc {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* =====================
+       BOOKING
+    ===================== */
+    .booking-section {
+      position: relative;
+      z-index: 1;
+      padding: 80px 24px 100px;
+    }
+    .booking-inner {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    .booking-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    /* Calendar */
+    .cal-card {
+      background: rgba(13,40,24,0.7);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+      padding: 36px;
+      margin-bottom: 40px;
+    }
+    .cal-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+    }
+    .cal-nav-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--gold);
+      width: 38px; height: 38px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+    .cal-nav-btn:hover { background: var(--gold-dim); border-color: var(--gold); }
+    .cal-month {
+      font-family: var(--ff-display);
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--cream);
+      letter-spacing: 0.04em;
+    }
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 3px;
+    }
+    .cal-weekday {
+      text-align: center;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      padding: 8px 0 12px;
+      font-weight: 500;
+    }
+    .cal-day {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      color: var(--cream);
+      cursor: pointer;
+      transition: all 0.15s;
+      position: relative;
+      font-weight: 300;
+    }
+    .cal-day:not(.empty):not(.past):not(.booked):hover {
+      background: var(--gold-dim);
+      color: var(--gold-lt);
+    }
+    .cal-day.empty, .cal-day.past { cursor: default; color: rgba(245,237,216,0.2); }
+    .cal-day.booked {
+      color: rgba(245,237,216,0.2);
+      cursor: not-allowed;
+      text-decoration: line-through;
+    }
+    .cal-day.booked::after {
+      content: '';
+      position: absolute;
+      bottom: 4px; left: 50%;
+      transform: translateX(-50%);
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: #8B4949;
+    }
+    .cal-day.selected {
+      background: var(--gold);
+      color: var(--deep);
+      font-weight: 600;
+    }
+    .cal-day.today::before {
+      content: '';
+      position: absolute;
+      bottom: 3px; left: 50%;
+      transform: translateX(-50%);
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+    .cal-legend {
+      display: flex;
+      gap: 24px;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      flex-wrap: wrap;
+    }
+    .legend-item { display: flex; align-items: center; gap: 7px; }
+    .ldot {
+      width: 9px; height: 9px;
+      border-radius: 1px;
+      flex-shrink: 0;
+    }
+    .ldot.avail { background: var(--gold-dim); border: 1px solid var(--border); }
+    .ldot.sel   { background: var(--gold); }
+    .ldot.book  { background: #8B4949; border-radius: 50%; width: 6px; height: 6px; }
+
+    /* Form */
+    .form-card {
+      background: rgba(13,40,24,0.7);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+      padding: 44px;
+    }
+    .form-title {
+      font-family: var(--ff-display);
+      font-size: 1.8rem;
+      font-weight: 400;
+      color: var(--cream);
+      margin-bottom: 6px;
+    }
+    .selected-date-display {
+      color: var(--gold);
+      font-size: 0.85rem;
+      margin-bottom: 36px;
+      min-height: 1.4em;
+      letter-spacing: 0.04em;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .form-group {
+      margin-bottom: 22px;
+    }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-label {
+      display: block;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      background: rgba(9,26,16,0.6);
+      border: 1px solid var(--border);
+      color: var(--cream);
+      padding: 13px 16px;
+      font-family: var(--ff-body);
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      border-radius: 0;
+      -webkit-appearance: none;
+    }
+    .form-input::placeholder,
+    .form-textarea::placeholder { color: rgba(245,237,216,0.25); }
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      border-color: var(--gold);
+      background: rgba(9,26,16,0.9);
+    }
+    .form-select option { background: var(--forest); color: var(--cream); }
+    .form-textarea { resize: vertical; min-height: 120px; }
+
+    .submit-btn {
+      width: 100%;
+      padding: 18px;
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold-lt);
+      font-family: var(--ff-body);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .submit-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+      z-index: 0;
+    }
+    .submit-btn span { position: relative; z-index: 1; }
+    .submit-btn:hover { color: var(--deep); }
+    .submit-btn:hover::before { transform: scaleX(1); }
+
+    .form-note {
+      text-align: center;
+      margin-top: 14px;
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    /* Success */
+    .success-card {
+      display: none;
+      background: rgba(13,40,24,0.7);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+      padding: 80px 40px;
+      text-align: center;
+    }
+    .success-ornament {
+      font-family: var(--ff-arabic);
+      font-size: 2.4rem;
+      color: var(--gold);
+      margin-bottom: 20px;
+      line-height: 1.4;
+    }
+    .success-title {
+      font-family: var(--ff-display);
+      font-size: 2rem;
+      font-weight: 400;
+      color: var(--cream);
+      margin-bottom: 12px;
+    }
+    .success-body {
+      color: var(--muted);
+      margin-bottom: 36px;
+      line-height: 1.8;
+    }
+
+    /* =====================
+       CONTACT
+    ===================== */
+    .contact-section {
+      position: relative;
+      z-index: 1;
+      padding: 80px 24px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+    .contact-inner { max-width: 520px; margin: 0 auto; }
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-top: 32px;
+      flex-wrap: wrap;
+    }
+    .contact-link {
+      color: var(--gold-lt);
+      font-size: 0.88rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.2s;
+      letter-spacing: 0.02em;
+    }
+    .contact-link:hover { color: var(--white); }
+
+    /* =====================
+       FOOTER
+    ===================== */
+    footer {
+      position: relative;
+      z-index: 1;
+      padding: 28px 24px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .footer-name {
+      font-family: var(--ff-display);
+      font-size: 0.95rem;
+      color: var(--gold);
+      letter-spacing: 0.06em;
+    }
+    .footer-copy {
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    /* =====================
+       RESPONSIVE
+    ===================== */
+    @media (max-width: 700px) {
+      .nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      .cal-card, .form-card { padding: 22px 16px; }
+      .form-row { grid-template-columns: 1fr; }
+      .services-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 420px) {
+      .cal-day { font-size: 0.72rem; }
+      .services-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Geometric background -->
+<div class="geo-bg" aria-hidden="true"></div>
+
+<!-- ===================== NAV ===================== -->
+<nav class="nav">
+  <div class="nav-logo">
+    <img src="images/logo.png" alt="Maqam Al Mahmoud Logo" />
+    <div>
+      <div class="nav-brand">
+        Maqam Al Mahmoud
+        <span>المقام المحمود</span>
+      </div>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#booking">Book</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+
+  <!-- Islamic arch SVG as hero background deco -->
+  <svg class="hero-arch" viewBox="0 0 600 400" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M300 380 Q50 380 50 200 Q50 40 300 20 Q550 40 550 200 Q550 380 300 380Z" stroke="#C9A84C" stroke-width="1.5" fill="none"/>
+    <path d="M300 360 Q80 360 80 200 Q80 60 300 40 Q520 60 520 200 Q520 360 300 360Z" stroke="#C9A84C" stroke-width="0.8" fill="none" stroke-dasharray="4 6"/>
+    <!-- Geometric star -->
+    <path d="M300 160 L310 190 L342 190 L317 208 L327 238 L300 220 L273 238 L283 208 L258 190 L290 190Z" stroke="#C9A84C" stroke-width="1" fill="none"/>
+    <!-- Muqarnas-style points -->
+    <path d="M180 290 L200 250 L220 290" stroke="#C9A84C" stroke-width="1" fill="none"/>
+    <path d="M380 290 L400 250 L420 290" stroke="#C9A84C" stroke-width="1" fill="none"/>
+    <path d="M230 320 L250 280 L270 320" stroke="#C9A84C" stroke-width="0.8" fill="none"/>
+    <path d="M330 320 L350 280 L370 320" stroke="#C9A84C" stroke-width="0.8" fill="none"/>
+    <path d="M270 340 L300 300 L330 340" stroke="#C9A84C" stroke-width="0.8" fill="none"/>
+    <!-- Lattice lines -->
+    <line x1="50" y1="200" x2="550" y2="200" stroke="#C9A84C" stroke-width="0.5" opacity="0.4"/>
+    <line x1="300" y1="20" x2="300" y2="380" stroke="#C9A84C" stroke-width="0.5" opacity="0.4"/>
+  </svg>
+
+  <img src="images/logo.png" alt="Maqam Al Mahmoud" class="hero-logo" />
+
+  <p class="hero-arabic">المقام المحمود</p>
+
+  <p class="hero-eyebrow">Nesheed · Qur'an · Maqamat</p>
+
+  <h1 class="hero-headline">
+    Where the Voice Becomes<br><em>an Act of Worship</em>
+  </h1>
+
+  <p class="hero-sub">
+    Bringing sacred vocal artistry to weddings, community events, and spiritual gatherings — rooted in tradition, resonant in the present.
+  </p>
+
+  <a href="#booking" class="hero-cta">Reserve a Date</a>
+
+  <div class="scroll-hint" aria-hidden="true">
+    <span>Scroll</span>
+    <svg width="14" height="20" viewBox="0 0 14 20" fill="none">
+      <rect x="1" y="1" width="12" height="18" rx="6" stroke="#C9A84C" stroke-width="1.2"/>
+      <circle cx="7" cy="7" r="2" fill="#C9A84C"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ===================== DIVIDER ===================== -->
+<div class="gold-divider"><div class="gold-divider-diamond"></div></div>
+
+<!-- ===================== ABOUT ===================== -->
+<section class="about" id="about">
+  <div class="about-inner">
+    <p class="section-eyebrow">Who We Are</p>
+    <h2 class="section-title">Elevating Gatherings Through the Art of Nesheed</h2>
+    <p class="about-body">
+      Maqam Al Mahmoud is a Nesheed and Qur'anic performance ensemble dedicated to the ancient tradition of devotional vocal music. Grounded in the maqamat — the modal scales that have shaped Islamic musical heritage for centuries — each performance is an invitation to stillness, reflection, and spiritual presence.
+    </p>
+    <p class="about-arabic-quote">اللَّهُ نُورُ السَّمَاوَاتِ وَالْأَرْضِ</p>
+    <p class="about-arabic-translation">"Allah is the Light of the heavens and the earth." — Surah An-Nur 24:35</p>
+  </div>
+</section>
+
+<!-- ===================== SERVICES ===================== -->
+<section class="services" id="services">
+  <div class="gold-divider" style="margin-bottom: 0;"><div class="gold-divider-diamond"></div></div>
+  <div class="services-grid">
+    <div class="service-card">
+      <span class="service-icon">🕌</span>
+      <div class="service-name">Weddings & Walima</div>
+      <div class="service-desc">Sacred atmosphere for your blessed union</div>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🌙</span>
+      <div class="service-name">Community Events</div>
+      <div class="service-desc">Masjid programs, fundraisers, Mawlid</div>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🍼</span>
+      <div class="service-name">Aqiqah & Celebrations</div>
+      <div class="service-desc">Welcoming life's milestones with beauty</div>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">📖</span>
+      <div class="service-name">Qur'anic Recitation</div>
+      <div class="service-desc">Opening programs, graduations, gatherings</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== BOOKING ===================== -->
+<section class="booking-section" id="booking">
+  <div class="booking-inner">
+    <div class="booking-header">
+      <p class="section-eyebrow">Reserve Your Date</p>
+      <h2 class="section-title">Book a Performance</h2>
+      <p style="color: var(--muted); font-size: 0.9rem;">Select an available date, then complete your request below.</p>
+    </div>
+
+    <!-- Calendar -->
+    <div class="cal-card">
+      <div class="cal-nav">
+        <button class="cal-nav-btn" id="prev-month" aria-label="Previous month">&#8592;</button>
+        <span class="cal-month" id="month-label"></span>
+        <button class="cal-nav-btn" id="next-month" aria-label="Next month">&#8594;</button>
+      </div>
+      <div class="cal-grid">
+        <div class="cal-weekday">Sun</div>
+        <div class="cal-weekday">Mon</div>
+        <div class="cal-weekday">Tue</div>
+        <div class="cal-weekday">Wed</div>
+        <div class="cal-weekday">Thu</div>
+        <div class="cal-weekday">Fri</div>
+        <div class="cal-weekday">Sat</div>
+      </div>
+      <div class="cal-grid" id="cal-days"></div>
+      <div class="cal-legend">
+        <div class="legend-item"><div class="ldot avail"></div> Available</div>
+        <div class="legend-item"><div class="ldot sel"></div> Selected</div>
+        <div class="legend-item"><div class="ldot book"></div> Booked</div>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <div class="form-card" id="booking-form">
+      <div class="form-title">Your Request</div>
+      <div class="selected-date-display" id="date-display">↑ Please select a date above</div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="f-name">Full Name</label>
+          <input class="form-input" type="text" id="f-name" placeholder="Ahmad Abdullah" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-email">Email Address</label>
+          <input class="form-input" type="email" id="f-email" placeholder="you@example.com" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-phone">Phone Number</label>
+          <input class="form-input" type="tel" id="f-phone" placeholder="+1 (555) 000-0000" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-event">Type of Event</label>
+          <select class="form-select" id="f-event">
+            <option value="">— Select —</option>
+            <option>Wedding / Walima</option>
+            <option>Aqiqah</option>
+            <option>Community Gathering</option>
+            <option>Masjid Event</option>
+            <option>School / Fundraiser</option>
+            <option>Mawlid</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label class="form-label" for="f-location">City / Venue</label>
+          <input class="form-input" type="text" id="f-location" placeholder="e.g. Chicago, IL — Dar Al-Islam Center" />
+        </div>
+        <div class="form-group full">
+          <label class="form-label" for="f-message">Tell Us More</label>
+          <textarea class="form-textarea" id="f-message" placeholder="Expected attendance, time of event, special requests..."></textarea>
+        </div>
+      </div>
+
+      <button class="submit-btn" onclick="submitBooking()"><span>Send Booking Request</span></button>
+      <p class="form-note">We'll respond within 24–48 hours, insha'Allah.</p>
+    </div>
+
+    <!-- Success -->
+    <div class="success-card" id="success-card">
+      <div class="success-ornament">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+      <div class="success-title">Request Received</div>
+      <p class="success-body">
+        JazakAllahu Khairan for reaching out.<br />
+        We'll be in touch with you soon, insha'Allah.
+      </p>
+      <button class="submit-btn" style="max-width:260px; margin: 0 auto;" onclick="resetForm()">
+        <span>Submit Another Request</span>
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== DIVIDER ===================== -->
+<div class="gold-divider"><div class="gold-divider-diamond"></div></div>
+
+<!-- ===================== CONTACT ===================== -->
+<section class="contact-section" id="contact">
+  <div class="contact-inner">
+    <p class="section-eyebrow">Get in Touch</p>
+    <h2 class="section-title" style="font-size: clamp(1.6rem, 4vw, 2.2rem);">Have a Question?</h2>
+    <p style="color: var(--muted); font-size: 0.9rem;">Reach out before booking — we'd love to hear about your event.</p>
+    <div class="contact-links">
+      <a class="contact-link" href="mailto:booking@maqamalmahmoud.com">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+        booking@maqamalmahmoud.com
+      </a>
+      <a class="contact-link" href="https://instagram.com/maqaamalmahmoud" target="_blank">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        @maqaamalmahmoud
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="footer-inner">
+    <span class="footer-name">Maqam Al Mahmoud</span>
+    <span style="color: var(--border);">·</span>
+    <span class="footer-copy">&copy; 2026 · All Rights Reserved</span>
+  </div>
+</footer>
+
+<!-- ===================== CALENDAR JS ===================== -->
+<script>
+  // Add your booked dates here in "YYYY-MM-DD" format
+  const BOOKED = [
+    "2026-06-20",
+    "2026-06-28",
+    "2026-07-04",
+    "2026-07-19",
+  ];
+
+  const MONTHS = ["January","February","March","April","May","June",
+                  "July","August","September","October","November","December"];
+
+  let cur = new Date();
+  let sel = null;
+
+  function pad(n) { return String(n).padStart(2,"0"); }
+  function ymd(d) { return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
+
+  function renderCal() {
+    const y = cur.getFullYear(), m = cur.getMonth();
+    document.getElementById("month-label").textContent = `${MONTHS[m]} ${y}`;
+    const grid = document.getElementById("cal-days");
+    grid.innerHTML = "";
+
+    const firstDay = new Date(y, m, 1).getDay();
+    const days     = new Date(y, m+1, 0).getDate();
+    const today    = new Date(); today.setHours(0,0,0,0);
+
+    for (let i = 0; i < firstDay; i++) {
+      const el = document.createElement("div");
+      el.className = "cal-day empty";
+      grid.appendChild(el);
+    }
+
+    for (let d = 1; d <= days; d++) {
+      const el   = document.createElement("div");
+      const date = new Date(y, m, d);
+      const key  = ymd(date);
+
+      el.className = "cal-day";
+      el.textContent = d;
+
+      if (ymd(today) === key) el.classList.add("today");
+
+      if (date < today)          el.classList.add("past");
+      else if (BOOKED.includes(key)) el.classList.add("booked");
+      else {
+        if (sel === key) el.classList.add("selected");
+        el.addEventListener("click", () => pick(key, d, y, m));
+      }
+      grid.appendChild(el);
+    }
+  }
+
+  function pick(key, d, y, m) {
+    sel = key;
+    renderCal();
+    const label = `${MONTHS[m]} ${d}, ${y}`;
+    document.getElementById("date-display").textContent = `📅 Date selected: ${label}`;
+    document.getElementById("booking-form").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  document.getElementById("prev-month").addEventListener("click", () => {
+    cur.setMonth(cur.getMonth() - 1); renderCal();
+  });
+  document.getElementById("next-month").addEventListener("click", () => {
+    cur.setMonth(cur.getMonth() + 1); renderCal();
+  });
+
+  function submitBooking() {
+    if (!sel)       { alert("Please select a date on the calendar first."); return; }
+    if (!document.getElementById("f-name").value.trim())  { alert("Please enter your name."); return; }
+    if (!document.getElementById("f-email").value.trim()) { alert("Please enter your email."); return; }
+    if (!document.getElementById("f-event").value)        { alert("Please select an event type."); return; }
+
+    document.getElementById("booking-form").style.display = "none";
+    const sc = document.getElementById("success-card");
+    sc.style.display = "block";
+    sc.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function resetForm() {
+    sel = null;
+    ["f-name","f-email","f-phone","f-location","f-message"].forEach(id => document.getElementById(id).value = "");
+    document.getElementById("f-event").value = "";
+    document.getElementById("date-display").textContent = "↑ Please select a date above";
+    document.getElementById("success-card").style.display = "none";
+    document.getElementById("booking-form").style.display = "block";
+    renderCal();
+    document.getElementById("booking").scrollIntoView({ behavior: "smooth" });
+  }
+
+  renderCal();
+</script>
+</body>
+</html>
