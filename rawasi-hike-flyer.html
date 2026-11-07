@@ -80,6 +80,9 @@
     --logo-label-w: 190px;
     --logo-badge-bg: rgba(255, 255, 255, 0.9);
     --logo-badge-pad: 14px;
+    --logo-ring-w: 2px;
+    --logo-ring-color: rgba(255, 255, 255, 0.7);
+    --logo-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
     --fallback-name-size: 24px;
 
     /* 8. Handle */
@@ -204,14 +207,20 @@
     overflow: hidden;
     display: flex; align-items: center; justify-content: center;
   }
+  /* Partner logos are round avatars in their own colors. A thin white
+     ring keeps the dark ones (Alif's navy) from sinking into the photo. */
+  .logo { box-shadow: 0 0 0 var(--logo-ring-w) var(--logo-ring-color), var(--logo-shadow); }
   .logo img {
     width: 100%; height: 100%;
-    object-fit: contain;
-    filter: brightness(0) invert(1) drop-shadow(0 2px 6px rgba(0,0,0,0.45));
+    object-fit: cover;
+    display: block;
   }
-  /* Use .badge on a partner whose logo looks bad as a white silhouette */
+  /* Optional: .mono turns a transparent-background logo into a white silhouette */
+  .partner.mono .logo img { object-fit: contain; filter: brightness(0) invert(1); }
+  .partner.mono .logo { box-shadow: none; }
+  /* Optional: .badge puts a transparent-background logo in a white circle */
   .partner.badge .logo { background: var(--logo-badge-bg); padding: var(--logo-badge-pad); }
-  .partner.badge .logo img { filter: none; }
+  .partner.badge .logo img { object-fit: contain; }
 
   .partner-label {
     margin-top: var(--logo-label-gap);
