@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Rawasi Adventures — Sierra Backpacking Trip</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@600;700&display=swap" rel="stylesheet" />
+<style>
+  /* ============================================================
+     All layout values live here. The flyer fills the viewport,
+     so the same file renders 1080x1350 (IG) and 1080x1920 (story).
+     ============================================================ */
+  :root {
+    /* Canvas */
+    --canvas-w: 100vw;
+    --canvas-h: 100vh;
+    --side-pad: 48px;
+
+    /* Font: HM8font1 */
+    --font: 'EB Garamond', 'Cormorant Garamond', Georgia, serif;
+    --text: #FFFFFF;
+    --shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+
+    /* Photo */
+    --photo-focus-x: 60%;
+    --photo-focus-y: 70%;
+
+    /* Overlay gradient */
+    --ov-top: rgba(0, 0, 0, 0.55);
+    --ov-mid: rgba(0, 0, 0, 0.15);
+    --ov-bottom: rgba(0, 0, 0, 0.75);
+    --ov-mid-stop: 45%;
+
+    /* 1. Brand label */
+    --brand-top: 6%;
+    --brand-size: 28px;
+    --brand-weight: 600;
+    --brand-tracking: 0.3em;
+
+    /* 2. Headline */
+    --headline-top: 18%;
+    --headline-size: 86px;
+    --headline-weight: 700;
+    --headline-line: 1.0;
+    --headline-tracking: 0;
+
+    /* Bottom stack */
+    --stack-bottom: 4%;          /* handle sits ~4% from the bottom */
+
+    /* 4. Subtitle */
+    --subtitle-size: 44px;
+    --subtitle-weight: 600;
+    --subtitle-line: 1.2;
+    --subtitle-max-w: 860px;
+
+    /* 5. Divider */
+    --divider-w: 120px;
+    --divider-h: 2px;
+    --divider-opacity: 0.7;
+    --divider-gap: 34px;         /* space above and below the divider */
+
+    /* 6. Dates */
+    --dates-size: 30px;
+    --dates-weight: 600;
+    --dates-tracking: 0.25em;
+    --dates-opacity: 0.85;
+
+    /* 7. Partners */
+    --partners-gap-top: 64px;    /* space between dates and partner block */
+    --collab-size: 20px;
+    --collab-tracking: 0.3em;
+    --collab-opacity: 0.75;
+    --collab-gap: 26px;          /* space under "IN COLLABORATION WITH" */
+    --logo-size: 110px;
+    --logo-gap: 40px;
+    --logo-label-size: 18px;
+    --logo-label-gap: 12px;
+    --logo-label-w: 190px;
+    --logo-badge-bg: rgba(255, 255, 255, 0.9);
+    --logo-badge-pad: 14px;
+    --fallback-name-size: 24px;
+
+    /* 8. Handle */
+    --handle-gap-top: 48px;
+    --handle-size: 24px;
+    --handle-opacity: 0.8;
+  }
+
+  /* Shorter canvas (IG portrait 1080x1350): tighten the bottom stack
+     so more of the hikers stay visible in the open middle. */
+  @media (max-height: 1500px) {
+    :root {
+      --divider-gap: 24px;
+      --partners-gap-top: 40px;
+      --collab-gap: 18px;
+      --handle-gap-top: 30px;
+      --stack-bottom: 4%;
+    }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: var(--canvas-w); height: var(--canvas-h); overflow: hidden; background: #111; }
+
+  .flyer {
+    position: relative;
+    width: var(--canvas-w);
+    height: var(--canvas-h);
+    overflow: hidden;
+    font-family: var(--font);
+    color: var(--text);
+    text-align: center;
+    text-shadow: var(--shadow);
+  }
+
+  .photo {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: var(--photo-focus-x) var(--photo-focus-y);
+  }
+
+  .overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom,
+      var(--ov-top) 0%,
+      var(--ov-mid) var(--ov-mid-stop),
+      var(--ov-bottom) 100%);
+  }
+
+  .brand {
+    position: absolute; left: 0; right: 0;
+    top: var(--brand-top);
+    font-size: var(--brand-size);
+    font-weight: var(--brand-weight);
+    letter-spacing: var(--brand-tracking);
+    padding-left: var(--brand-tracking); /* balance trailing tracking so it stays optically centered */
+  }
+
+  .headline {
+    position: absolute; left: var(--side-pad); right: var(--side-pad);
+    top: var(--headline-top);
+    font-size: var(--headline-size);
+    font-weight: var(--headline-weight);
+    line-height: var(--headline-line);
+    letter-spacing: var(--headline-tracking);
+  }
+  .headline span { display: block; white-space: nowrap; }
+
+  .stack {
+    position: absolute; left: var(--side-pad); right: var(--side-pad);
+    bottom: var(--stack-bottom);
+    display: flex; flex-direction: column; align-items: center;
+  }
+
+  .subtitle {
+    max-width: var(--subtitle-max-w);
+    font-size: var(--subtitle-size);
+    font-weight: var(--subtitle-weight);
+    line-height: var(--subtitle-line);
+  }
+
+  .divider {
+    width: var(--divider-w);
+    height: var(--divider-h);
+    background: var(--text);
+    opacity: var(--divider-opacity);
+    margin: var(--divider-gap) 0;
+    box-shadow: var(--shadow);
+  }
+
+  .dates {
+    font-size: var(--dates-size);
+    font-weight: var(--dates-weight);
+    letter-spacing: var(--dates-tracking);
+    padding-left: var(--dates-tracking);
+    opacity: var(--dates-opacity);
+  }
+
+  .collab {
+    margin-top: var(--partners-gap-top);
+    font-size: var(--collab-size);
+    font-weight: 600;
+    letter-spacing: var(--collab-tracking);
+    padding-left: var(--collab-tracking);
+    opacity: var(--collab-opacity);
+  }
+
+  .partners {
+    margin-top: var(--collab-gap);
+    display: flex; justify-content: center; align-items: flex-start;
+    gap: var(--logo-gap);
+  }
+
+  .partner {
+    width: var(--logo-label-w);
+    display: flex; flex-direction: column; align-items: center;
+  }
+
+  .logo {
+    width: var(--logo-size); height: var(--logo-size);
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .logo img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+    filter: brightness(0) invert(1) drop-shadow(0 2px 6px rgba(0,0,0,0.45));
+  }
+  /* Use .badge on a partner whose logo looks bad as a white silhouette */
+  .partner.badge .logo { background: var(--logo-badge-bg); padding: var(--logo-badge-pad); }
+  .partner.badge .logo img { filter: none; }
+
+  .partner-label {
+    margin-top: var(--logo-label-gap);
+    font-size: var(--logo-label-size);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  /* Missing logo: the partner's name takes the logo's place */
+  .partner.missing .logo { display: none; }
+  .partner.missing .partner-label {
+    margin-top: 0;
+    min-height: var(--logo-size);
+    display: flex; align-items: center; justify-content: center;
+    font-size: var(--fallback-name-size);
+    line-height: 1.15;
+  }
+
+  .handle {
+    margin-top: var(--handle-gap-top);
+    font-size: var(--handle-size);
+    font-weight: 600;
+    opacity: var(--handle-opacity);
+  }
+</style>
+</head>
+<body>
+  <main class="flyer">
+    <img class="photo" src="trail.jpg" alt="Backpackers hiking a granite trail through pine trees" />
+    <div class="overlay"></div>
+
+    <div class="brand">RAWASI ADVENTURES</div>
+
+    <h1 class="headline">
+      <span>SIERRA BACKPACKING</span>
+      <span>TRIP</span>
+    </h1>
+
+    <section class="stack">
+      <p class="subtitle">A weekend in the mountains —<br />the journey as ibadah</p>
+      <div class="divider"></div>
+      <p class="dates">DATES COMING SOON</p>
+
+      <p class="collab">IN COLLABORATION WITH</p>
+      <div class="partners">
+        <div class="partner">
+          <div class="logo"><img src="logo-artandwilderness.png" alt="" onerror="this.closest('.partner').classList.add('missing')" /></div>
+          <div class="partner-label">Art &amp; Wilderness Institute</div>
+        </div>
+        <div class="partner">
+          <div class="logo"><img src="logo-alif.png" alt="" onerror="this.closest('.partner').classList.add('missing')" /></div>
+          <div class="partner-label">Alif Community Foundation</div>
+        </div>
+        <div class="partner">
+          <div class="logo"><img src="logo-sagesteward.png" alt="" onerror="this.closest('.partner').classList.add('missing')" /></div>
+          <div class="partner-label">Sage Steward Farm</div>
+        </div>
+      </div>
+
+      <p class="handle">@rawasi.adventures</p>
+    </section>
+  </main>
+</body>
+</html>
